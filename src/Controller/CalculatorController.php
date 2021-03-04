@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\CalculatorType;
+use App\Service\SyntaxParser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,15 @@ class CalculatorController extends AbstractController
     }
 
     #[Route("/calculate", name: "calculator")]
-    public function calculate(): JsonResponse
+    public function calculate(Request $request, SyntaxParser $syntaxParser): JsonResponse
     {
-        return new JsonResponse("mande");
+        $data = json_decode($request->getContent(), true);
+        try {
+            $resultat = $syntaxParser->parse($data['operation']);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        return new JsonResponse($resultat);
     }
 }

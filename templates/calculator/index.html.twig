@@ -51,7 +51,7 @@
 						{{ form_widget(form.0) }}
 					</div>
 					<div class="col">
-						{{ form_widget(form.point) }}
+						{{ form_widget(form.clear) }}
 					</div>
 					<div class="col">
 						<button type="button" id="submit"  class="btn btn-primary">=</button>
@@ -95,22 +95,30 @@ window.onload = function() {
         },false);
     }
 
-    var sendForm = function() {
+    let sendForm = function() {
+        let operation = document.getElementById("calculator_operation");
         fetch(baseUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"operation": operation.value})
+        }).then(function(response) {  
+            if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                return;
             }
-        }).then(function(response) {
-                console.log(response.json());
+            response.json().then(function(data) {
+                operation.value = data.result; 
+            });   
         })
         .catch(function(error) {
             console.log(error);
         }); 
     };
 
-    var submitButton = document.getElementById('submit');
+    let submitButton = document.getElementById('submit');
     submitButton.addEventListener("click", sendForm);
 }
 </script>

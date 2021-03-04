@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 
 class CalculatorType extends AbstractType
 {
@@ -17,7 +18,7 @@ class CalculatorType extends AbstractType
         $builder
             ->add('operation', TextType::class, [
                 'label' => false,
-                'attr' => ['class' => 'form-control operation-input']
+                'attr' => ['class' => 'form-control operation-input', 'focusable' => false]
             ]);
 
         foreach ($operators as $name => $sign) {
@@ -25,7 +26,7 @@ class CalculatorType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-secondary btn-block operator-button',
                     'value' => $sign
-                ], 
+                ],
                 'label' => $sign
             ]);
         }
@@ -39,12 +40,12 @@ class CalculatorType extends AbstractType
                 'label' => $i
             ]);
         }
-        $builder->add('point', ButtonType::class, [
+        $builder->add('clear', ResetType::class, [
             'attr' => [
-                 'class' => 'btn btn-light btn-block operand-button',
+                 'class' => 'btn btn-danger btn-block operand-button',
                  'value' => '.'
                 ],
-            'label' => '.'
+            'label' => 'CA'
         ]);
         ;
     }
@@ -52,7 +53,7 @@ class CalculatorType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+           'attr' => ['id' => 'calculator']
         ]);
     }
 }
