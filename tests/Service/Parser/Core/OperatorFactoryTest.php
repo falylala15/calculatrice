@@ -22,7 +22,6 @@ class OperatorFactoryTest extends TestCase
         OperatorFactory::create('unkown');
     }
 
-
     public function createFactoryProvider()
     {
         return [
