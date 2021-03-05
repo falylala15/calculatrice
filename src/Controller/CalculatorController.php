@@ -32,6 +32,7 @@ class CalculatorController extends AbstractController
             $resultat = $syntaxParser->parse($data['operation']);
         } catch (\Throwable $th) {
             //throw $th;
+            // TODO
         }
 
         return new JsonResponse($resultat);
