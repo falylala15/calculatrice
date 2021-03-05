@@ -18,7 +18,7 @@ class CalculatorType extends AbstractType
         $builder
             ->add('operation', TextType::class, [
                 'label' => false,
-                'attr' => ['class' => 'form-control operation-input', 'focusable' => false]
+                'attr' => ['class' => 'form-control operation-input', 'readonly' => 'readonly']
             ]);
 
         foreach ($operators as $name => $sign) {
@@ -42,8 +42,7 @@ class CalculatorType extends AbstractType
         }
         $builder->add('clear', ResetType::class, [
             'attr' => [
-                 'class' => 'btn btn-danger btn-block operand-button',
-                 'value' => '.'
+                 'class' => 'btn btn-danger btn-block',
                 ],
             'label' => 'CA'
         ]);

@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CalculatorController extends AbstractController
@@ -28,6 +27,7 @@ class CalculatorController extends AbstractController
     public function calculate(Request $request, SyntaxParser $syntaxParser): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+
         try {
             $resultat = $syntaxParser->parse($data['operation']);
         } catch (\Throwable $th) {

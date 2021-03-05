@@ -25,4 +25,9 @@ class Stack
     {
         return empty($this->data);
     }
+
+    public function getData()
+    {
+        return $this->data;
+    }
 }

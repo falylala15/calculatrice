@@ -10,9 +10,13 @@ class QueueTest extends TestCase
     public function testEmpty(): void
     {
         $queue = new Queue();
+
         $this->assertTrue($queue->isEmpty());
     }
 
+    /**
+     * @depends testEmpty
+     */
     public function testEnqueueAndDequeue() : void
     {
         $queue = new Queue();
