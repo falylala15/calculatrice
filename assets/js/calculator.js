@@ -1,59 +1,67 @@
- window.onload = function() {
-    let operationField = document.getElementById("calculator_operation");
-    let operandButtons = document.querySelectorAll(".operand-button");
-      for(let i = 0; i < operandButtons.length; i++ ) {
-        operandButtons[i].addEventListener("click",function() {     
-            operand = this.value;
-            operationField.value += operand;   
-     },false);   
-    } 
-    let operatorButtons = document.querySelectorAll(".operator-button");
-    for (let i = 0; i < operatorButtons.length; i++ ) {
-        operatorButtons[i].addEventListener("click",function() {
-            operator = this.value;
-            currentValue = operationField.value;
-            if(currentValue.length >= 1 && ['+','-','/','*'].includes(currentValue.slice(-1))){
-                 operationField.value = currentValue.slice(0, -1) + operator;
-            } else {
-                operationField.value += this.value;  
-            }
-            
-        },false);
+export default class Calculator {
+    constructor(options = {}) {
+        Object.assign(this, {
+            operands: '.operand-button',
+            operators: '.operation-button',
+            operationField: '',
+            parseUrl: '/calculate'
+        }, options);
     }
 
-    var lastOperation = document.getElementById("last-operation");
+    bindEvents() {
+        let that = this;
+        this.operators.forEach(element => {
+            element.addEventListener("click", function () {
+                let currentValue = that.operationField.value;
+                if (currentValue.length >= 1 && ['+', '-', '/', '*'].includes(currentValue.slice(-1))) {
+                    that.operationField.value = currentValue.slice(0, -1) + this.value;
+                } else {
+                    that.operationField.value += this.value;
+                }
+            }, false);
+        });
 
-    var sendForm = function() {
-        let operation = document.getElementById("calculator_operation");
-        let baseUrl = document.getElementById("parser_path").getAttribute("data-path");
-        lastOperation.textContent = operation.value + ' =';
+        this.operands.forEach(element => {
+            element.addEventListener("click", function () {
+                that.operationField.value += this.value;
+            }, false);
+        });
 
-        fetch(baseUrl, {
+        this.lastOperation.addEventListener("click", this.clear, false);
+        this.submitButton.addEventListener("click", function () {
+            this.parse();
+        }.bind(this), false);
+    }
+
+    clear() {
+        this.lastOperation.textContent = "";
+    }
+
+    parse() {
+        let self = this;
+        self.lastOperation.textContent = self.operationField.value + ' =';
+        fetch(this.parseUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({"operation": operation.value})
-        }).then(function(response) {  
+            body: JSON.stringify({ "operation": self.operationField.value })
+        }).then(function (response) {
             if (response.status != 200) {
-                    console.log('Looks like there was a problem. Status Code: ' + response.status); //TODO
+                console.log('Looks like there was a problem. Status Code: ' + response.status); //TODO
                 return;
             }
-            response.json().then(function(data) {
-                operation.value = data.result; 
-            });   
+            response.json().then(function (data) {
+                self.operationField.value = data.result;
+            });
         })
-        .catch(function(error) {
-            console.log(error);
-        }); 
-    };
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
-    var submitButton = document.getElementById('submit');
-    submitButton.addEventListener("click", sendForm);
-
-    var clearButton = document.getElementById('calculator_clear');
-    clearButton.addEventListener("click", () => {
-        lastOperation.textContent = "";
-    });
+    init() {
+        this.bindEvents();
+    }
 }
