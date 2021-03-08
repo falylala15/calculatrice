@@ -1,3 +1,8 @@
-body {
+html,body {
     background-color: lightgray;
+    height: 100%;
+}
+
+.operand-button, .operator-button, .clear, .submit {
+    min-width: 100% !important;
 }

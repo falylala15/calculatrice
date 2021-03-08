@@ -42,7 +42,7 @@ class CalculatorType extends AbstractType
         }
         $builder->add('clear', ResetType::class, [
             'attr' => [
-                 'class' => 'btn btn-danger btn-block',
+                 'class' => 'btn btn-danger btn-block clear',
                 ],
             'label' => 'CA'
         ]);
