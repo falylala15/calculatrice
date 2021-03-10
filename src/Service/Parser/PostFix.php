@@ -8,7 +8,7 @@ use App\Service\Parser\Stack;
 
 class PostFix implements TermTransformerInterface
 {
-    public function transform(array $expressions) : array
+    public function convert(array $expressions) : array
     {
         $output = new Queue();
         $stack = new Stack();
@@ -28,7 +28,7 @@ class PostFix implements TermTransformerInterface
                 }
                 
                 $stack->push($expression);
-            } elseif ($expression == ExpressionUtils::LEFT_PARENTHESIS) {     
+            } elseif ($expression == ExpressionUtils::LEFT_PARENTHESIS) {
                 $stack->push($expression);
             } elseif ($expression == ExpressionUtils::RIGHT_PARENTHESIS) {
                 while ($stack->peek() != ExpressionUtils::LEFT_PARENTHESIS) {

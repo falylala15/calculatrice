@@ -13,7 +13,7 @@ class PostFixTest extends TestCase
    public function testTermsToPostix($expected, $input)
    {
         $postix = new PostFix();
-        $result = $postix->transform($input);
+        $result = $postix->convert($input);
 
         $this->assertSame($expected, $result);
    }

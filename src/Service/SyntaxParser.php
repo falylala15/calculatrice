@@ -17,7 +17,7 @@ class SyntaxParser
     public function parse(string $terms): array
     {
         $terms = $this->expressionUtils->split($terms);   
-        $terms = $this->termTransformer->transform($terms);
+        $terms = $this->termTransformer->convert($terms);
         
         return $this->eval($terms);
     }
@@ -27,10 +27,10 @@ class SyntaxParser
         $output = new Stack();
         foreach ($terms as $term) {
             if (in_array($term, ExpressionUtils::BASIC_OPERATORS)) {
-                $second = $output->pop();
-                $first = $output->pop();
+                $secondNumber = $output->pop();
+                $firstNumber = $output->pop();
                 $operator = OperatorFactory::create($term);
-                $result = $operator->process($first, $second);
+                $result = $operator->process($firstNumber, $secondNumber);
 
                 $output->push($result);
             } else {

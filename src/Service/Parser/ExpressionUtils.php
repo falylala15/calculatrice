@@ -2,8 +2,6 @@
 
 namespace App\Service\Parser;
 
-use App\Service\SyntaxParser;
-
 class ExpressionUtils
 {
     const BASIC_OPERATORS = ['+','-', '*', '/'];

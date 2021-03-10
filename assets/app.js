@@ -11,10 +11,10 @@ import './styles/app.css';
 import Calculator from './js/Calculator.js';
 
 var calculator = new Calculator({
-    operators : document.querySelectorAll('.operator-button'),
-    operands : document.querySelectorAll('.operand-button'),
+    operatorButtons : document.querySelectorAll('.operator-button'),
+    operandButtons : document.querySelectorAll('.operand-button'),
     operationField : document.getElementById("calculator_operation"),
-    parseUrl : document.getElementById("parser_path").getAttribute("data-path"),
+    synthaxParserUrl : document.getElementById("parser_path").getAttribute("data-path"),
     lastOperation : document.getElementById("last-operation"),
     submitButton : document.getElementById('submit')
 });

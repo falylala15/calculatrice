@@ -1,16 +1,17 @@
 export default class Calculator {
     constructor(options = {}) {
-        Object.assign(this, {
-            operands: '.operand-button',
-            operators: '.operation-button',
-            operationField: '',
-            parseUrl: '/calculate'
-        }, options);
+        this.operatorButtons = options.operatorButtons;
+        this.operandButtons = options.operandButtons;
+        this.operationField = options.operationField;
+        this.synthaxParserUrl = options.synthaxParserUrl;
+        this.lastOperation = options.lastOperation;
+        this.submitButton = options.submitButton;
     }
 
     bindEvents() {
         let that = this;
-        this.operators.forEach(element => {
+
+        this.operatorButtons.forEach(element => {
             element.addEventListener("click", function () {
                 let currentValue = that.operationField.value;
                 if (currentValue.length >= 1 && ['+', '-', '/', '*'].includes(currentValue.slice(-1))) {
@@ -21,13 +22,16 @@ export default class Calculator {
             }, false);
         });
 
-        this.operands.forEach(element => {
+        this.operandButtons.forEach(element => {
             element.addEventListener("click", function () {
                 that.operationField.value += this.value;
             }, false);
         });
 
-        this.lastOperation.addEventListener("click", this.clear, false);
+        this.lastOperation.addEventListener("click", function () {
+            this.clear();
+        }.bind(this), false);
+
         this.submitButton.addEventListener("click", function () {
             this.parse();
         }.bind(this), false);
@@ -39,8 +43,10 @@ export default class Calculator {
 
     parse() {
         let self = this;
+
         self.lastOperation.textContent = self.operationField.value + ' =';
-        fetch(this.parseUrl, {
+        
+        fetch(this.synthaxParserUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
